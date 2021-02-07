@@ -11,7 +11,6 @@
 #include <Headers/kern_config.hpp>
 #include <Headers/kern_util.hpp>
 #include <Headers/kern_patcher.hpp>
-#include <Library/LegacyLibkernMacros.h>
 
 #include <libkern/c++/OSSerialize.h>
 #include <IOKit/IORegistryEntry.h>
@@ -198,7 +197,8 @@ namespace WIOKit {
 		kIOPCIConfigInterruptLine           = 0x3C,
 		kIOPCIConfigInterruptPin            = 0x3D,
 		kIOPCIConfigMinimumGrant            = 0x3E,
-		kIOPCIConfigMaximumLatency          = 0x3F
+		kIOPCIConfigMaximumLatency          = 0x3F,
+		kIOPCIConfigGraphicsControl         = 0x50
 	};
 
 	/**
@@ -232,6 +232,15 @@ namespace WIOKit {
 	using t_PCIGetFunctionNumber = uint8_t (*)(IORegistryEntry *service);
 
 	/**
+	 *  Await for device publishing in IOService plane
+	 *
+	 *  @param obj  wait for (PCI) object publishing
+	 *
+	 *  @retval true on success
+	 */
+	EXPORT bool awaitPublishing(IORegistryEntry *obj);
+
+	/**
 	 *  Read PCI Config register
 	 *
 	 *  @param service  IOPCIDevice-compatible service.
@@ -258,7 +267,7 @@ namespace WIOKit {
 	 *
 	 *  @return valid computer type or ComputerAny
 	 */
-	EXPORT int getComputerModel();
+	EXPORT int getComputerModel() DEPRECATE("Use BaseDeviceInfo");
 
 	/**
 	 *  Retrieve computer model and/or board-id properties
@@ -270,7 +279,7 @@ namespace WIOKit {
 	 *
 	 *  @return true if relevant properties already are available, otherwise buffers are unchanged
 	 */
-	EXPORT bool getComputerInfo(char *model, size_t modelsz, char *board, size_t boardsz);
+	EXPORT bool getComputerInfo(char *model, size_t modelsz, char *board, size_t boardsz) DEPRECATE("Use BaseDeviceInfo");
 
 	/**
 	 *  Retrieve an ioreg entry by path/prefix

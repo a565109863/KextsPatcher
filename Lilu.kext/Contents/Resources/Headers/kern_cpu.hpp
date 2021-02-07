@@ -12,7 +12,7 @@
 #include <Headers/kern_iokit.hpp>
 #include <Headers/kern_util.hpp>
 
-#include <Library/LegacyIOService.h>
+#include <IOKit/IOService.h>
 
 /**
  *  XNU CPU-related exports missing from headers
@@ -83,12 +83,13 @@ namespace CPUInfo {
 		CPU_MODEL_KABYLAKE_ULT   =  0x8E,
 		CPU_MODEL_KABYLAKE_ULX   =  0x8E,
 		CPU_MODEL_KABYLAKE_DT    =  0x9E,
-		CPU_MODEL_COFFEELAKE     =  0x9E,
-		CPU_MODEL_COFFEELAKE_ULT =  0x9E,
-		CPU_MODEL_COFFEELAKE_ULX =  0x9E,
-		CPU_MODEL_COFFEELAKE_DT  =  0x9E,
 		CPU_MODEL_CANNONLAKE     =  0x66,
-		CPU_MODEL_ICELAKE        =  0x7E
+		CPU_MODEL_ICELAKE_Y      =  0x7D,
+		CPU_MODEL_ICELAKE_U      =  0x7E,
+		CPU_MODEL_ICELAKE_SP     =  0x9F, /* Some variation of Ice Lake */
+		CPU_MODEL_COMETLAKE_S    =  0xA5, /* desktop CometLake */
+		CPU_MODEL_COMETLAKE_Y    =  0xA5, /* aka 10th generation Amber Lake Y */
+		CPU_MODEL_COMETLAKE_U    =  0xA6,
 	};
 
 	/**
@@ -118,6 +119,7 @@ namespace CPUInfo {
 		CoffeeLake,
 		CannonLake,
 		IceLake,
+		CometLake,
 		MaxGeneration
 	};
 
@@ -302,7 +304,7 @@ namespace CPUInfo {
 	/**
 	 *  Reads CPU information and other data.
 	 */
-	void loadCpuInformation();
+	void init();
 
 	/**
 	 *  Installed CPU information mapping
@@ -381,7 +383,7 @@ namespace CPUInfo {
 	 *
 	 *  @return detected Intel CPU generation
 	 */
-	EXPORT CpuGeneration getGeneration(uint32_t *ofamily=nullptr, uint32_t *omodel=nullptr, uint32_t *ostepping=nullptr);
+	EXPORT CpuGeneration getGeneration(uint32_t *ofamily=nullptr, uint32_t *omodel=nullptr, uint32_t *ostepping=nullptr)  DEPRECATE("Use BaseDeviceInfo");;
 
 	/**
 	 *  Obtain CPU topology.
@@ -405,6 +407,11 @@ namespace CPUInfo {
 	 *  @return true if supported
 	 */
 	EXPORT bool getCpuid(uint32_t no, uint32_t count, uint32_t *a, uint32_t *b=nullptr, uint32_t *c=nullptr, uint32_t *d=nullptr);
+
+	/**
+	 *  Is haswell eligible hardware
+	 */
+	EXPORT bool isHaswellEligible();
 }
 
 #endif /* kern_cpu_h */

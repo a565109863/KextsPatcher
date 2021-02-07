@@ -89,10 +89,21 @@ public:
 	};
 
 	/**
+	 * Binary modification patches flags
+	 */
+	enum BinaryModPatchFlags {
+		/*
+		 * Only applies to one process, not globally.
+		 */
+		LocalOnly = 1
+	};
+
+	/**
 	 *  Structure holding lookup-style binary patches
 	 */
 	struct BinaryModPatch {
 		cpu_type_t cpu;
+		uint32_t flags;
 		const uint8_t *find;
 		const uint8_t *replace;
 		size_t size;
@@ -101,6 +112,8 @@ public:
 		FileSegment segment;
 		uint32_t section;
 	};
+
+	static_assert(sizeof(BinaryModPatch) == 56, "BinaryModPatch ABI compatibility failure");
 
 	/**
 	 *  Structure describing the modifications for the binary
@@ -212,6 +225,13 @@ public:
 	 *  Activates monitoring functions if necessary
 	 */
 	void activate();
+
+	/**
+	 *  Get active dyld shared cache path.
+	 *
+	 *  @return shared cache path constant
+	 */
+	EXPORT static const char *getSharedCachePath();
 
 private:
 
@@ -459,7 +479,7 @@ private:
 	/**
 	 *  Patcher status
 	 */
-	bool activated {false};
+	_Atomic(bool) activated = false;
 
 	/**
 	 *  Validation cookie
@@ -536,14 +556,44 @@ private:
 	void patchBinary(vm_map_t map, const char *path, uint32_t len);
 
 	/**
-	 *  Dyld shared cache map path for 10.10+ on Haswell
+	 *  DYLD shared cache map path for 10.10+ on Haswell
 	 */
 	static constexpr const char *SharedCacheMapHaswell {"/private/var/db/dyld/dyld_shared_cache_x86_64h.map"};
 
 	/**
-	 *  Dyld shared cache map path for all other systems and older CPUs
+	 *  DYLD shared cache map path for all other systems and older CPUs
 	 */
 	static constexpr const char *SharedCacheMapLegacy {"/private/var/db/dyld/dyld_shared_cache_x86_64.map"};
+
+	/**
+	 *  DYLD shared cache path on Haswell+ before Big Sur
+	 */
+	static constexpr const char *sharedCacheHaswell {"/private/var/db/dyld/dyld_shared_cache_x86_64h"};
+
+	/**
+	 *  DYLD shared cache path on older systems before Big Sur
+	 */
+	static constexpr const char *sharedCacheLegacy {"/private/var/db/dyld/dyld_shared_cache_x86_64"};
+	
+	/**
+	 *  DYLD shared cache map path on Haswell+ on Big Sur
+	 */
+	static constexpr const char *bigSurSharedCacheMapHaswell {"/System/Library/dyld/dyld_shared_cache_x86_64h.map"};
+	
+	/**
+	 *  DYLD shared cache map path on older systems on Big Sur
+	 */
+	static constexpr const char *bigSurSharedCacheMapLegacy {"/System/Library/dyld/dyld_shared_cache_x86_64.map"};
+
+	/**
+	 *  DYLD shared cache path on Haswell+ on Big Sur
+	 */
+	static constexpr const char *bigSurSharedCacheHaswell {"/System/Library/dyld/dyld_shared_cache_x86_64h"};
+
+	/**
+	 *  DYLD shared cache path on older systems on Big Sur
+	 */
+	static constexpr const char *bigSurSharedCacheLegacy {"/System/Library/dyld/dyld_shared_cache_x86_64"};
 
 };
 

@@ -10,7 +10,6 @@
 
 #include <Headers/kern_config.hpp>
 #include <Headers/kern_compat.hpp>
-#include <Headers/kern_atomic.hpp>
 
 #include <libkern/libkern.h>
 #include <libkern/OSDebug.h>
@@ -18,6 +17,7 @@
 #include <mach/vm_prot.h>
 #include <sys/proc.h>
 #include <IOKit/IOLib.h>
+#include <stdatomic.h>
 
 #define xStringify(a) Stringify(a)
 #define Stringify(a) #a
@@ -73,10 +73,10 @@ extern proc_t kernproc;
  *  @param cond  precondition
  *  @param str   printf-like string
  */
-#define SYSLOG_COND(cond, module, str, ...)                                                                \
-	do {                                                                                                   \
-	    if (cond)                                                                                          \
-	        lilu_os_log( "%s%10s" str "\n", xStringify(PRODUCT_NAME) ": ", module " @ ", ## __VA_ARGS__);  \
+#define SYSLOG_COND(cond, module, str, ...)                                                                			  \
+	do {                                                                                                   			  \
+	    if (cond)                                                                                          			  \
+	        lilu_os_log( "%s%10s: @ " str "\n", xStringify(PRODUCT_NAME), safeString(module), ## __VA_ARGS__);		  \
 	} while (0)
 
 /**
@@ -94,12 +94,12 @@ extern proc_t kernproc;
  *  @param module log module
  *  @param str    printf-like string
  */
-#define SYSTRACE_COND(cond, module, str, ...)                                                                        \
-	do {                                                                                                             \
-	    if (cond) {                                                                                                  \
-	        SYSLOG(module, str, ## __VA_ARGS__);                                                                     \
-		    OSReportWithBacktrace( "%s%10s" str "\n", xStringify(PRODUCT_NAME) ": ", module " @ ", ## __VA_ARGS__);  \
-	    }                                                                                                            \
+#define SYSTRACE_COND(cond, module, str, ...)                                                                        			 \
+	do {                                                                                                             			 \
+	    if (cond) {                                                                                                  			 \
+	        SYSLOG(module, str, ## __VA_ARGS__);                                                                     			 \
+		    OSReportWithBacktrace( "%s%10s: @ " str "\n", xStringify(PRODUCT_NAME), safeString(module), ## __VA_ARGS__);			 \
+	    }                                                                                                            			 \
 	} while (0)
 
 /**
@@ -117,12 +117,12 @@ extern proc_t kernproc;
  *  @param module log module
  *  @param str    printf-like string
  */
-#define PANIC_COND(cond, module, str, ...)                                                             \
-	do {                                                                                               \
-	    if (cond) {                                                                                    \
-	        (panic)( "%s%10s" str "\n", xStringify(PRODUCT_NAME) ": ", module " @ ", ## __VA_ARGS__);  \
-	        UNREACHABLE();                                                                             \
-	    }                                                                                              \
+#define PANIC_COND(cond, module, str, ...)                                                             		\
+	do {                                                                                               		\
+	    if (cond) {                                                                                    		\
+	        (panic)( "%s%10s: @ " str "\n", xStringify(PRODUCT_NAME), safeString(module), ## __VA_ARGS__);  \
+	        UNREACHABLE();                                                                             		\
+	    }                                                                                              		\
 	} while (0)
 
 /**
@@ -251,6 +251,12 @@ extern proc_t kernproc;
 #define NONNULL __attribute__((nonnull))
 
 /**
+ *  Compiler hints regarding branching
+ */
+#define LIKELY(x) __builtin_expect(!!(x), 1)
+#define UNLIKELY(x) __builtin_expect(!!(x), 0)
+
+/**
  *  This function is supposed to workaround missing entries in the system log.
  *  By providing its own buffer for logging data.
  *
@@ -290,6 +296,29 @@ EXPORT char *strrchr(const char *stack, int ch);
 EXPORT void qsort(void *a, size_t n, size_t es, int (*cmp)(const void *, const void *));
 
 /**
+ *  Portable implementation of memmem function performing byte sequence (needle) search in another byte sequence (haystack).
+ *
+ *  @param h0    haystack
+ *  @param k    haystack size
+ *  @param n0   needle
+ *  @param l  needle size
+ *
+ *  @return pointer to found sequence or NULL
+ */
+EXPORT void *lilu_os_memmem(const void *h0, size_t k, const void *n0, size_t l);
+
+/**
+ *  Portable implementation of memchr function performing byte search in a byte sequence.
+ *
+ *  @param src    source to search in
+ *  @param c    byte to find
+ *  @param n   source size in bytes
+ *
+ *  @return pointer to found byte or NULL
+ */
+EXPORT void *lilu_os_memchr(const void *src, int c, size_t n);
+
+/**
  *  Count array elements
  *
  *  @param array   Array to process
@@ -327,6 +356,7 @@ enum KernelVersion {
 	HighSierra    = 17,
 	Mojave        = 18,
 	Catalina      = 19,
+	BigSur        = 20,
 };
 
 /**
@@ -506,6 +536,14 @@ template <typename T>
 inline T FunctionCast(T org, mach_vm_address_t ptr) {
 	return reinterpret_cast<T>(ptr);
 }
+
+/**
+ *  Reference cleaner
+ */
+template<class T> struct remove_reference      {typedef T type;};
+template<class T> struct remove_reference<T&>  {typedef T type;};
+template<class T> struct remove_reference<T&&> {typedef T type;};
+
 
 /**
  *  Typed buffer allocator
@@ -703,14 +741,15 @@ struct ppair {
 
 /**
  *  Embedded vector-like container
- *  You muse call deinit before destruction
+ *  You must call deinit before destruction
  *  Ugh, someone, please, port libc++ to XNU...
  *
  *  @param T        held type
+ *  @param P        destructible type
  *  @param deleter  type destructor
  */
-template <typename T, void (*deleter)(T)=emptyDeleter<T>>
-class evector {
+template <typename T, typename P, void (*deleter)(P)=emptyDeleter<P>>
+class evector_base {
 	T *ptr {nullptr};
 	size_t cnt {0};
 	size_t rsvd {0};
@@ -842,9 +881,9 @@ public:
 		return false;
 	}
 
-	evector() = default;
-	evector(const evector &) = delete;
-	evector operator =(const evector &) = delete;
+	evector_base() = default;
+	evector_base(const evector_base &) = delete;
+	evector_base operator =(const evector_base &) = delete;
 
 	/**
 	 * Free the used memory
@@ -861,57 +900,13 @@ public:
 };
 
 /**
- *  Slightly non-standard helpers to get the date in a YYYY-MM-DD format.
- */
-template <size_t i>
-inline constexpr char getBuildYear() {
-	static_assert(i < 4, "Year consists of four digits");
-	return __DATE__[7+i];
-}
-
-template <size_t i>
-inline constexpr char getBuildMonth() {
-	static_assert(i < 2, "Month consists of two digits");
-	auto mon = static_cast<uint32_t>(__DATE__[0])
-		| (static_cast<uint32_t>(__DATE__[1]) << 8U)
-		| (static_cast<uint32_t>(__DATE__[2]) << 16U)
-		| (static_cast<uint32_t>(__DATE__[3]) << 24U);
-	switch (mon) {
-		case ' naJ':
-			return "01"[i];
-		case ' beF':
-			return "02"[i];
-		case ' raM':
-			return "03"[i];
-		case ' rpA':
-			return "04"[i];
-		case ' yaM':
-			return "05"[i];
-		case ' nuJ':
-			return "06"[i];
-		case ' luJ':
-			return "07"[i];
-		case ' guA':
-			return "08"[i];
-		case ' peS':
-			return "09"[i];
-		case ' tcO':
-			return "10"[i];
-		case ' voN':
-			return "11"[i];
-		case ' ceD':
-			return "12"[i];
-		default:
-			return '0';
-	}
-}
-
-template <size_t i>
-inline constexpr char getBuildDay() {
-	static_assert(i < 2, "Day consists of two digits");
-	if (i == 0 && __DATE__[4+i] == ' ')
-		return '0';
-	return __DATE__[4+i];
-}
+*  Embedded vector-like container, simplified specialisation
+*  You must call deinit before destruction
+*
+*  @param T        held type
+*  @param deleter  type destructor
+*/
+template <typename T, void (*deleter)(T)=emptyDeleter<T>>
+class evector : public evector_base<typename remove_reference<T>::type, T, deleter> { };
 
 #endif /* kern_util_hpp */

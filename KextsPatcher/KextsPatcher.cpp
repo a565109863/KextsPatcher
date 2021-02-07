@@ -52,7 +52,7 @@ void KextsPatcherPlugin::processKext(KernelPatcher &patcher, size_t index, mach_
 {
     for (size_t i = 0; i < kextListSize; i++) {
         if (kextList[i].loadIndex == index) {
-            if (progressState[i] != ProcessingState::EverythingDone) {
+            if (progressState[i] != ProcessingState::ControllersLoaded) {
                 DBGLOG("KextsPatcher", "processKext patchesModSize:%zu",  patchesModSize);
                 applyPatches(patcher, index, patchesMod, patchesModSize);
                 
@@ -68,12 +68,12 @@ void KextsPatcherPlugin::processKext(KernelPatcher &patcher, size_t index, mach_
 }
 
 void KextsPatcherPlugin::applyPatches(KernelPatcher &patcher, size_t index, const KextPatch *patches, size_t patchNum) {
-    DBGLOG("KextsPatcher", "applying patches for %lu kext", index);
     for (size_t p = 0; p < patchNum; p++) {
         auto &patch = patches[p];
         if (patch.patch.kext->loadIndex == index) {
+            DBGLOG("KextsPatcher", "checking patch %lu for %lu kext (%s)", p, index, patch.patch.kext->id);
             if (patcher.compatibleKernel(patch.minKernel, patch.maxKernel)) {
-                DBGLOG("KextsPatcher", "applying %lu patch for %lu kext", p, index);
+                DBGLOG("KextsPatcher", "applying patch %lu  for %lu kext (%s)", p, index, patch.patch.kext->id);
                 patcher.applyLookupPatch(&patch.patch);
                 // Do not really care for the errors for now
                 patcher.clearError();

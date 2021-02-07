@@ -9,7 +9,7 @@
 #define kern_cpuf_hpp
 
 #include <Headers/kern_patcher.hpp>
-#include <Library/LegacyIOService.h>
+#include <IOKit/IOService.h>
 
 #include <Headers/kern_iokit.hpp>
 
@@ -46,8 +46,7 @@ private:
     struct ProcessingState {
         enum {
             NotReady = 0,
-            ControllersLoaded = 1,
-            EverythingDone = ControllersLoaded
+            ControllersLoaded = 1
         };
     };
     int *progressState;

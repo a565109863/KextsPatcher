@@ -9,11 +9,10 @@
 /* Begin PBXBuildFile section */
 		18363E4620DF88B900CC11EF /* KextsPatcher.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 18363E4520DF88B900CC11EF /* KextsPatcher.hpp */; };
 		18363E4820DF88BA00CC11EF /* KextsPatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18363E4720DF88BA00CC11EF /* KextsPatcher.cpp */; };
-		18363E5D20DF89A300CC11EF /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18363E5120DF89A300CC11EF /* libkmod.a */; };
-		18363E5F20DF89A300CC11EF /* build.tool in Resources */ = {isa = PBXBuildFile; fileRef = 18363E5420DF89A300CC11EF /* build.tool */; };
 		18363EA520DF89FA00CC11EF /* kern_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18363EA420DF89FA00CC11EF /* kern_start.cpp */; };
 		18363EA820DF8AD900CC11EF /* plugin_start.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 18363EA620DF8AD900CC11EF /* plugin_start.cpp */; };
 		18363EA920DF8AD900CC11EF /* plugin_start.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 18363EA720DF8AD900CC11EF /* plugin_start.hpp */; };
+		A124D08825D024BA00EF0798 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A124D08725D024BA00EF0798 /* libkmod.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,15 +20,6 @@
 		18363E4520DF88B900CC11EF /* KextsPatcher.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = KextsPatcher.hpp; sourceTree = "<group>"; };
 		18363E4720DF88BA00CC11EF /* KextsPatcher.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = KextsPatcher.cpp; sourceTree = "<group>"; };
 		18363E4920DF88BA00CC11EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		18363E5120DF89A300CC11EF /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libkmod.a; sourceTree = "<group>"; };
-		18363E5320DF89A300CC11EF /* entry64.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = entry64.S; sourceTree = "<group>"; };
-		18363E5420DF89A300CC11EF /* build.tool */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = build.tool; sourceTree = "<group>"; };
-		18363E5520DF89A300CC11EF /* entry32.S */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = entry32.S; sourceTree = "<group>"; };
-		18363E5620DF89A300CC11EF /* wrappers.inc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.pascal; path = wrappers.inc; sourceTree = "<group>"; };
-		18363E5820DF89A300CC11EF /* mac_framework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac_framework.h; sourceTree = "<group>"; };
-		18363E5920DF89A300CC11EF /* mac_policy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mac_policy.h; sourceTree = "<group>"; };
-		18363E5A20DF89A300CC11EF /* _label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _label.h; sourceTree = "<group>"; };
-		18363E5C20DF89A300CC11EF /* LegacyIOService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LegacyIOService.h; sourceTree = "<group>"; };
 		18363E6820DF89B100CC11EF /* kern_config.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_config.hpp; sourceTree = "<group>"; };
 		18363E6920DF89B100CC11EF /* kern_nvram.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_nvram.hpp; sourceTree = "<group>"; };
 		18363E6A20DF89B100CC11EF /* kern_cpu.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_cpu.hpp; sourceTree = "<group>"; };
@@ -54,13 +44,13 @@
 		18363E7F20DF89B100CC11EF /* xcore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xcore.h; sourceTree = "<group>"; };
 		18363E8020DF89B100CC11EF /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
 		18363E8120DF89B100CC11EF /* kern_patcher.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_patcher.hpp; sourceTree = "<group>"; };
-		18363E8320DF89B100CC11EF /* LiluVariables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiluVariables.h; sourceTree = "<group>"; };
 		18363E8420DF89B100CC11EF /* kern_compat.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_compat.hpp; sourceTree = "<group>"; };
 		18363E8520DF89B100CC11EF /* kern_api.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_api.hpp; sourceTree = "<group>"; };
 		18363E8620DF89B100CC11EF /* kern_util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = kern_util.hpp; sourceTree = "<group>"; };
 		18363EA420DF89FA00CC11EF /* kern_start.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = kern_start.cpp; sourceTree = "<group>"; };
 		18363EA620DF8AD900CC11EF /* plugin_start.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = plugin_start.cpp; sourceTree = "<group>"; };
 		18363EA720DF8AD900CC11EF /* plugin_start.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = plugin_start.hpp; sourceTree = "<group>"; };
+		A124D08725D024BA00EF0798 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18363E5D20DF89A300CC11EF /* libkmod.a in Frameworks */,
+				A124D08825D024BA00EF0798 /* libkmod.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -81,6 +71,7 @@
 				18363E4F20DF898D00CC11EF /* SDK */,
 				18363E4420DF88B900CC11EF /* KextsPatcher */,
 				18363E4320DF88B900CC11EF /* Products */,
+				A124D08625D024BA00EF0798 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -117,34 +108,9 @@
 		18363E5020DF89A300CC11EF /* Library */ = {
 			isa = PBXGroup;
 			children = (
-				18363E5120DF89A300CC11EF /* libkmod.a */,
-				18363E5220DF89A300CC11EF /* wrappers */,
-				18363E5720DF89A300CC11EF /* security */,
-				18363E5C20DF89A300CC11EF /* LegacyIOService.h */,
 			);
 			name = Library;
 			path = Lilu.kext/Contents/Resources/Library;
-			sourceTree = "<group>";
-		};
-		18363E5220DF89A300CC11EF /* wrappers */ = {
-			isa = PBXGroup;
-			children = (
-				18363E5320DF89A300CC11EF /* entry64.S */,
-				18363E5420DF89A300CC11EF /* build.tool */,
-				18363E5520DF89A300CC11EF /* entry32.S */,
-				18363E5620DF89A300CC11EF /* wrappers.inc */,
-			);
-			path = wrappers;
-			sourceTree = "<group>";
-		};
-		18363E5720DF89A300CC11EF /* security */ = {
-			isa = PBXGroup;
-			children = (
-				18363E5820DF89A300CC11EF /* mac_framework.h */,
-				18363E5920DF89A300CC11EF /* mac_policy.h */,
-				18363E5A20DF89A300CC11EF /* _label.h */,
-			);
-			path = security;
 			sourceTree = "<group>";
 		};
 		18363E6720DF89B100CC11EF /* Headers */ = {
@@ -165,7 +131,6 @@
 				18363E7520DF89B100CC11EF /* kern_disasm.hpp */,
 				18363E7620DF89B100CC11EF /* capstone */,
 				18363E8120DF89B100CC11EF /* kern_patcher.hpp */,
-				18363E8220DF89B100CC11EF /* Guid */,
 				18363E8420DF89B100CC11EF /* kern_compat.hpp */,
 				18363E8520DF89B100CC11EF /* kern_api.hpp */,
 				18363E8620DF89B100CC11EF /* kern_util.hpp */,
@@ -191,12 +156,12 @@
 			path = capstone;
 			sourceTree = "<group>";
 		};
-		18363E8220DF89B100CC11EF /* Guid */ = {
+		A124D08625D024BA00EF0798 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				18363E8320DF89B100CC11EF /* LiluVariables.h */,
+				A124D08725D024BA00EF0798 /* libkmod.a */,
 			);
-			path = Guid;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -268,7 +233,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18363E5F20DF89A300CC11EF /* build.tool in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,16 +388,18 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = KextsPatcher/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Lilu.kext/Contents/Resources/Library",
+					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
 				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MODULE_NAME = com.zhong.KextsPatcher;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.1.2;
+				MODULE_VERSION = 0.1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
@@ -482,16 +448,18 @@
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Lilu.kext/Contents/Resources";
 				INFOPLIST_FILE = KextsPatcher/Info.plist;
+				KERNEL_EXTENSION_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
+				KERNEL_FRAMEWORK_HEADERS = "$(PROJECT_DIR)/MacKernelSDK/Headers";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Lilu.kext/Contents/Resources/Library",
+					"$(PROJECT_DIR)/MacKernelSDK/Library/x86_64",
 				);
 				LLVM_LTO = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MODULE_NAME = com.zhong.KextsPatcher;
 				MODULE_START = "$(PRODUCT_NAME)_kern_start";
 				MODULE_STOP = "$(PRODUCT_NAME)_kern_stop";
-				MODULE_VERSION = 0.1.2;
+				MODULE_VERSION = 0.1.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = (
 					"-mmmx",
