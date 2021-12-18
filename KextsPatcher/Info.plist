@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>KEXT</string>
 	<key>CFBundleShortVersionString</key>
-	<string>$(MODULE_VERSION)</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(MODULE_VERSION)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>IOKitPersonalities</key>
 	<dict>
 		<key>KextsPatcher</key>
@@ -40,61 +40,6 @@
 			<string>IOKit</string>
 			<key>KextsConfig</key>
 			<dict>
-				<key>Patches</key>
-				<array>
-					<dict>
-						<key>Count</key>
-						<integer>1</integer>
-						<key>Find</key>
-						<data>a3Bzaes=</data>
-						<key>MinKernel</key>
-						<integer>13</integer>
-						<key>Name</key>
-						<string>AppleHDA</string>
-						<key>Replace</key>
-						<data>Y2ltaes=</data>
-					</dict>
-					<dict>
-						<key>Count</key>
-						<integer>1</integer>
-						<key>Find</key>
-						<data>AAQAAAQDAAAAAQMAEgQDAwAEAAAEAwAAAAEBABECAQEABAAABAMAAAABAgAhAwICAAQAAAQDAAAAAQQAIgUEBAAEAAAEAwAAAAEFABAABQUABAAABAMAAAABBgAgAQYG</data>
-						<key>MaxKernel</key>
-						<integer>14</integer>
-						<key>MinKernel</key>
-						<integer>13</integer>
-						<key>Name</key>
-						<string>AMD8000Controller</string>
-						<key>Replace</key>
-						<data>AAQAAAQDAAAAAQAAEgQDAQAIAAAEAgAAAHEAACIFAQMEAAAAFAAAAAABAAABAgIEBAAAABQAAAAAAQAAAAAEBgAEAAAEAwAAAAEAABAABQUABAAABAMAAAABAAAgAQYC</data>
-					</dict>
-					<dict>
-						<key>Count</key>
-						<integer>1</integer>
-						<key>Find</key>
-						<data>AAQAAAQDAAAAAQMAEgQDAwAEAAAEAwAAAAEBABECAQEABAAABAMAAAABAgAhAwICAAQAAAQDAAAAAQQAIgUEBAAEAAAEAwAAAAEFABAABQUABAAABAMAAAABBgAgAQYG</data>
-						<key>MaxKernel</key>
-						<integer>15</integer>
-						<key>MinKernel</key>
-						<integer>15</integer>
-						<key>Name</key>
-						<string>AMD8000Controller</string>
-						<key>Replace</key>
-						<data>AAQAAAQDAAAAAQAAEgQDAQAIAAAEAgAAAHEAACIFAQMEAAAAFAAAAAABAAABAgIEBAAAABQAAAAAAQAAAAAEBgAEAAAEAwAAAAEAABAABQUABAAABAMAAAABAAAgAQYC</data>
-					</dict>
-					<dict>
-						<key>Count</key>
-						<integer>1</integer>
-						<key>Find</key>
-						<data>AAQAAAQDAAAAAQMAAAAAABIEAwMAAAAAAAQAAAQDAAAAAQEAAAAAABECAQEAAAAAAAQAAAQDAAAAAQIAAAAAACEDAgIAAAAAAAQAAAQDAAAAAQQAAAAAACIFBAQAAAAAAAQAAAQDAAAAAQUAAAAAABAABQUAAAAAAAQAAAQDAAAAAQYAAAAAACABBgYAAAAA</data>
-						<key>MinKernel</key>
-						<integer>16</integer>
-						<key>Name</key>
-						<string>AMD8000Controller</string>
-						<key>Replace</key>
-						<data>AAQAAAQDAAAAAQMAAAAAABIEAwEAAAAAAAQAAAQDAAAAAQEAAAAAAAECAQQAAAAAAAQAAAQDAAAAAQIAAAAAACEDAgIAAAAAAAQAAAQDAAAAAQQAAAAAACIFBAMAAAAAAAQAAAQDAAAAAQUAAAAAAAAABQYAAAAAAAQAAAQDAAAAAQYAAAAAACABBgUAAAAA</data>
-					</dict>
-				</array>
 				<key>Kexts</key>
 				<dict>
 					<key>AMD8000Controller</key>
@@ -126,6 +71,105 @@
 						<true/>
 					</dict>
 				</dict>
+				<key>Patches</key>
+				<array>
+					<dict>
+						<key>Count</key>
+						<integer>1</integer>
+						<key>Find</key>
+						<data>
+						a3Bzaes=
+						</data>
+						<key>MinKernel</key>
+						<integer>13</integer>
+						<key>Name</key>
+						<string>AppleHDA</string>
+						<key>Replace</key>
+						<data>
+						Y2ltaes=
+						</data>
+					</dict>
+					<dict>
+						<key>Count</key>
+						<integer>1</integer>
+						<key>Find</key>
+						<data>
+						AAQAAAQDAAAAAQMAEgQDAwAEAAAE
+						AwAAAAEBABECAQEABAAABAMAAAAB
+						AgAhAwICAAQAAAQDAAAAAQQAIgUE
+						BAAEAAAEAwAAAAEFABAABQUABAAA
+						BAMAAAABBgAgAQYG
+						</data>
+						<key>MaxKernel</key>
+						<integer>14</integer>
+						<key>MinKernel</key>
+						<integer>13</integer>
+						<key>Name</key>
+						<string>AMD8000Controller</string>
+						<key>Replace</key>
+						<data>
+						AAQAAAQDAAAAAQAAEgQDAQAIAAAE
+						AgAAAHEAACIFAQMEAAAAFAAAAAAB
+						AAABAgIEBAAAABQAAAAAAQAAAAAE
+						BgAEAAAEAwAAAAEAABAABQUABAAA
+						BAMAAAABAAAgAQYC
+						</data>
+					</dict>
+					<dict>
+						<key>Count</key>
+						<integer>1</integer>
+						<key>Find</key>
+						<data>
+						AAQAAAQDAAAAAQMAEgQDAwAEAAAE
+						AwAAAAEBABECAQEABAAABAMAAAAB
+						AgAhAwICAAQAAAQDAAAAAQQAIgUE
+						BAAEAAAEAwAAAAEFABAABQUABAAA
+						BAMAAAABBgAgAQYG
+						</data>
+						<key>MaxKernel</key>
+						<integer>15</integer>
+						<key>MinKernel</key>
+						<integer>15</integer>
+						<key>Name</key>
+						<string>AMD8000Controller</string>
+						<key>Replace</key>
+						<data>
+						AAQAAAQDAAAAAQAAEgQDAQAIAAAE
+						AgAAAHEAACIFAQMEAAAAFAAAAAAB
+						AAABAgIEBAAAABQAAAAAAQAAAAAE
+						BgAEAAAEAwAAAAEAABAABQUABAAA
+						BAMAAAABAAAgAQYC
+						</data>
+					</dict>
+					<dict>
+						<key>Count</key>
+						<integer>1</integer>
+						<key>Find</key>
+						<data>
+						AAQAAAQDAAAAAQMAAAAAABIEAwMA
+						AAAAAAQAAAQDAAAAAQEAAAAAABEC
+						AQEAAAAAAAQAAAQDAAAAAQIAAAAA
+						ACEDAgIAAAAAAAQAAAQDAAAAAQQA
+						AAAAACIFBAQAAAAAAAQAAAQDAAAA
+						AQUAAAAAABAABQUAAAAAAAQAAAQD
+						AAAAAQYAAAAAACABBgYAAAAA
+						</data>
+						<key>MinKernel</key>
+						<integer>16</integer>
+						<key>Name</key>
+						<string>AMD8000Controller</string>
+						<key>Replace</key>
+						<data>
+						AAQAAAQDAAAAAQMAAAAAABIEAwEA
+						AAAAAAQAAAQDAAAAAQEAAAAAAAEC
+						AQQAAAAAAAQAAAQDAAAAAQIAAAAA
+						ACEDAgIAAAAAAAQAAAQDAAAAAQQA
+						AAAAACIFBAMAAAAAAAQAAAQDAAAA
+						AQUAAAAAAAAABQYAAAAAAAQAAAQD
+						AAAAAQYAAAAAACABBgUAAAAA
+						</data>
+					</dict>
+				</array>
 			</dict>
 		</dict>
 	</dict>

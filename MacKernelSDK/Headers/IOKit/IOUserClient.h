@@ -73,6 +73,9 @@ typedef IOReturn (IOService::*IOAsyncMethod)(OSAsyncReference asyncRef,
 typedef IOReturn (IOService::*IOTrap)(void * p1, void * p2, void * p3,
     void * p4, void * p5, void * p6 );
 
+typedef IOReturn (*IOMethodACID)(IOService * svc, void * p1, void * p2, void * p3,
+    void * p4, void * p5, void * p6 );
+
 struct IOExternalMethod {
 	IOService *         object;
 	IOMethod            func;
@@ -93,6 +96,32 @@ struct IOExternalTrap {
 	IOService *         object;
 	IOTrap              func;
 };
+
+//
+// When building for i386, clang does not emit proper code for IOExternalMethod.
+// The below struct is a workaround to have the correct positioning of the function pointer.
+//
+struct IOExternalMethodACID {
+  IOService *         object;
+#if defined(__i386__)
+  uint32_t            padding;
+#endif
+  IOMethodACID        func;
+#if defined(__x86_64__)
+  uint64_t            padding;
+#endif
+  IOOptionBits        flags;
+  IOByteCount         count0;
+  IOByteCount         count1;
+};
+
+#if defined(__i386__)
+#define kIOExternalMethodACIDPadding 0xFFFF0000
+#elif defined(__x86_64__)
+#define kIOExternalMethodACIDPadding 0x0
+#else
+#error Unsupported arch
+#endif
 
 enum {
 	kIOUserNotifyMaxMessageSize = 64
@@ -204,21 +233,38 @@ private:
 	void  * __reserved[9];
 
 public:
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_5
 	MIG_SERVER_ROUTINE virtual IOReturn
 	externalMethod(uint32_t selector, IOExternalMethodArguments *arguments,
 	    IOExternalMethodDispatch *dispatch = NULL,
 	    OSObject *target = NULL, void *reference = NULL);
+#endif
 
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_6
 	MIG_SERVER_ROUTINE virtual IOReturn registerNotificationPort(
 		mach_port_t port, UInt32 type, io_user_reference_t refCon);
+#endif
 
 private:
 #if __LP64__
+
 	OSMetaClassDeclareReservedUnused(IOUserClient, 0);
 	OSMetaClassDeclareReservedUnused(IOUserClient, 1);
+
 #else
+  
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_5
 	OSMetaClassDeclareReservedUsed(IOUserClient, 0);
+#else
+  	OSMetaClassDeclareReservedUnused(IOUserClient, 0);
+#endif
+  
+#if __MAC_OS_X_VERSION_MIN_REQUIRED >= __MAC_10_6
 	OSMetaClassDeclareReservedUsed(IOUserClient, 1);
+#else
+  	OSMetaClassDeclareReservedUnused(IOUserClient, 1);
+#endif
+  
 #endif
 	OSMetaClassDeclareReservedUnused(IOUserClient, 2);
 	OSMetaClassDeclareReservedUnused(IOUserClient, 3);
